@@ -142,3 +142,14 @@ func Filter(f func(card Card) bool) func([]Card) []Card {
 		return filtered
 	}
 }
+
+// Deck func
+func Deck(n int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var retCards []Card
+		for i := 0; i < n; i++ {
+			retCards = append(retCards, cards...)
+		}
+		return retCards
+	}
+}
