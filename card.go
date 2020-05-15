@@ -4,7 +4,9 @@ package shuffle
 
 import (
 	"fmt"
+	"math/rand"
 	"sort"
+	"time"
 )
 
 //Suit type
@@ -98,4 +100,32 @@ func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
 
 func absRank(c Card) int {
 	return int(c.Suit)*int(maxRank) + int(c.Rank)
+}
+
+//Shuffle func
+func Shuffle(cards []Card) []Card {
+	newCards := make([]Card, len(cards))
+
+	r := rand.New(rand.NewSource(time.Now().Unix()))
+
+	perm := r.Perm(len(cards))
+	// perm = [0,1,4,2,3]
+	for i, j := range perm {
+		newCards[i] = cards[j]
+	}
+
+	return newCards
+}
+
+// Jokers func
+func Jokers(n int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		for i := 0; i < n; i++ {
+			cards = append(cards, Card{
+				Rank: Rank(i),
+				Suit: Joker,
+			})
+		}
+		return cards
+	}
 }

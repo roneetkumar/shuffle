@@ -38,3 +38,27 @@ func TestDefaultSort(t *testing.T) {
 		t.Error("Expected Ave of Spades as first card. recieved:", cards[0])
 	}
 }
+
+func TestSort(t *testing.T) {
+	cards := New(Sort(Less))
+
+	exp := Card{Rank: Ace, Suit: Spade}
+
+	if cards[0] != exp {
+		t.Error("Expected Ave of Spades as first card. recieved:", cards[0])
+	}
+}
+
+func TestJokers(t *testing.T) {
+	cards := New(Jokers(3))
+	count := 0
+	for _, card := range cards {
+		if card.Suit == Joker {
+			count++
+		}
+	}
+
+	if count != 3 {
+		t.Error("Expected 3 Jokers, recieved:", count)
+	}
+}
