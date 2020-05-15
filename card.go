@@ -2,7 +2,10 @@
 
 package shuffle
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+)
 
 //Suit type
 type Suit uint8
@@ -56,7 +59,7 @@ func (c Card) String() string {
 }
 
 //New func
-func New() []Card {
+func New(opts ...func([]Card) []Card) []Card {
 	var cards []Card
 
 	for _, suit := range suits {
@@ -65,5 +68,34 @@ func New() []Card {
 		}
 	}
 
+	for _, opt := range opts {
+		cards = opt(cards)
+	}
+
 	return cards
+}
+
+//DefaultSort func
+func DefaultSort(cards []Card) []Card {
+	sort.Slice(cards, Less(cards))
+	return cards
+}
+
+//Less func
+func Less(cards []Card) func(i, j int) bool {
+	return func(i, j int) bool {
+		return absRank(cards[i]) < absRank(cards[j])
+	}
+}
+
+//Sort func : Custom
+func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		sort.Slice(cards, less(cards))
+		return cards
+	}
+}
+
+func absRank(c Card) int {
+	return int(c.Suit)*int(maxRank) + int(c.Rank)
 }
