@@ -62,3 +62,18 @@ func TestJokers(t *testing.T) {
 		t.Error("Expected 3 Jokers, recieved:", count)
 	}
 }
+
+func TestFilter(t *testing.T) {
+
+	filter := func(card Card) bool {
+		return card.Rank == Two || card.Rank == Three
+	}
+
+	cards := New(Filter(filter))
+
+	for _, c := range cards {
+		if c.Rank == Two || c.Rank == Three {
+			t.Error("Expeceted all twos and threes to be filtered out.")
+		}
+	}
+}

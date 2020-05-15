@@ -129,3 +129,16 @@ func Jokers(n int) func([]Card) []Card {
 		return cards
 	}
 }
+
+//Filter func
+func Filter(f func(card Card) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var filtered []Card
+		for _, c := range cards {
+			if !f(c) {
+				filtered = append(filtered, c)
+			}
+		}
+		return filtered
+	}
+}
